@@ -40,7 +40,7 @@ public class RoleController {
         return new ResponseEntity<>(responseDTO, HttpStatus.OK);
     }// getROlesHierarchy
 
-    @PostMapping("/role")
+    @PostMapping("/roles")
     public String addRole(@RequestParam(required = true) String parentRoleId, @RequestParam(required = true) String roleType, RedirectAttributes redirectAttributes) {
 
 
