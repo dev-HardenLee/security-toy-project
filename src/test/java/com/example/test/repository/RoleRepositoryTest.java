@@ -8,10 +8,10 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabase;
 import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabase.Replace;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
+import org.springframework.test.annotation.Rollback;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.example.test.entity.Role;
-import com.example.test.enumeration.RoleType;
 
 import lombok.extern.log4j.Log4j2;
 
@@ -29,41 +29,40 @@ class RoleRepositoryTest {
 	
 	@Test
 	@Disabled
-//	@Rollback(value = false)
+	@Rollback(value = true)
 	void dummyInsert() {
 		memberRepository.deleteAll();
 		roleRepository.deleteAll();
 		
-		Role adminRole   = Role.builder().roleType(RoleType.ROLE_ADMIN).build();
+		Role adminRole   = Role.builder().roleType("ROLE_ADMIN").build();
 		
 		roleRepository.save(adminRole);
 		
-		Role leaderRole  = Role.builder().roleType(RoleType.ROLE_LEADER).parentRole(adminRole).build();
-		Role systemRole  = Role.builder().roleType(RoleType.ROLE_SYSTEM).parentRole(adminRole).build();
+		Role leaderRole  = Role.builder().roleType("ROLE_LEADER").parentRole(adminRole).build();
+		Role systemRole  = Role.builder().roleType("ROLE_SYSTEM").parentRole(adminRole).build();
 		
 		roleRepository.save(leaderRole);
 		roleRepository.save(systemRole);
 		
-		Role managerRole = Role.builder().roleType(RoleType.ROLE_MANAGER).parentRole(leaderRole).build();
+		Role managerRole = Role.builder().roleType("ROLE_MANAGER").parentRole(leaderRole).build();
 		
 		roleRepository.save(managerRole);
 		
-		Role userRole = Role.builder().roleType(RoleType.ROLE_USER).parentRole(managerRole).build();
+		Role userRole = Role.builder().roleType("ROLE_USER").parentRole(managerRole).build();
 		
 		roleRepository.save(userRole);
 		
-		Role anonymousRole = Role.builder().roleType(RoleType.ROLE_ANONYMOUS).parentRole(userRole).build();
+		Role anonymousRole = Role.builder().roleType("ROLE_ANONYMOUS").parentRole(userRole).build();
 		
 		roleRepository.save(anonymousRole);
 	}
 
 	@Test
-	void findAllWithParent() {
+	void findAllWithParentSort() {
 		List<Role> role = roleRepository.findAll();
 		
 		role.forEach(r -> log.info(r + " --> " + r.getParentRole()));
 	}// findAllWithParent
-
 }// RoleRepositoryTest
 
 

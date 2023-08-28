@@ -1,6 +1,7 @@
 package com.example.test.security.authentication;
 
 import lombok.Getter;
+import lombok.ToString;
 import org.springframework.security.web.authentication.WebAuthenticationDetails;
 
 import javax.servlet.http.HttpServletRequest;

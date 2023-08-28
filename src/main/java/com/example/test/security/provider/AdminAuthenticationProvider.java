@@ -1,7 +1,6 @@
 package com.example.test.security.provider;
 
 import com.example.test.dto.MemberDTO;
-import com.example.test.enumeration.RoleType;
 import com.example.test.security.authentication.AdminWebAuthenticationDetails;
 import com.example.test.security.authentication.ApiCustomUser;
 import com.example.test.security.exception.AdminKeyNotExistException;
@@ -9,15 +8,12 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
 import org.springframework.security.authentication.AuthenticationProvider;
 import org.springframework.security.authentication.BadCredentialsException;
-import org.springframework.security.authentication.InsufficientAuthenticationException;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
-import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.password.PasswordEncoder;
-import org.springframework.security.web.authentication.WebAuthenticationDetails;
 import org.springframework.util.StringUtils;
 
 import java.util.Arrays;
@@ -42,13 +38,13 @@ public class AdminAuthenticationProvider implements AuthenticationProvider {
 
         AdminWebAuthenticationDetails details = (AdminWebAuthenticationDetails) authentication.getDetails();
 
-        log.info("details : " + details);
+        log.info("details : " + details + ", admin-key : " + details.getAdminKey());
 
         if(!StringUtils.hasText(details.getAdminKey())) throw new AdminKeyNotExistException("Admin-Key is not exist. Please forward admin-key to the server");
 
-        RoleType roleType = memberDTO.getRoleDTO().getRoleType();
+        String roleType = memberDTO.getRoleDTO().getRoleType();
 
-        return new UsernamePasswordAuthenticationToken(memberDTO, null, Arrays.asList(new SimpleGrantedAuthority(roleType.getRole())));
+        return new UsernamePasswordAuthenticationToken(memberDTO, null, Arrays.asList(new SimpleGrantedAuthority(roleType)));
     }// authenticate
 
     @Override

@@ -2,8 +2,6 @@ package com.example.test.dto;
 
 
 
-import com.example.test.enumeration.RoleType;
-
 import lombok.Data;
 
 @Data
@@ -26,7 +24,7 @@ public class MemberDTO {
 		
 		private String password;
 		
-		private RoleType roleType;
+		private String roleType;
 		
 	}// JoinDTO
 	

@@ -8,7 +8,6 @@ import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.User;
 
 import com.example.test.dto.MemberDTO;
-import com.example.test.enumeration.RoleType;
 
 import lombok.Getter;
 
@@ -17,8 +16,8 @@ public class ApiCustomUser extends User {
 
 	private MemberDTO memberDTO;
 	
-	public ApiCustomUser(MemberDTO memberDTO, String password, RoleType roleType) {
-		this(memberDTO.getUserId(), password, Arrays.asList(new SimpleGrantedAuthority(roleType.getRole())));
+	public ApiCustomUser(MemberDTO memberDTO, String password, String roleType) {
+		this(memberDTO.getUserId(), password, Arrays.asList(new SimpleGrantedAuthority(roleType)));
 		this.memberDTO = memberDTO;
 	}// constructor
 	

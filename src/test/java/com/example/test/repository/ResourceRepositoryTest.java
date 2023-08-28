@@ -4,7 +4,6 @@ import com.example.test.entity.Resource;
 import com.example.test.entity.ResourceRole;
 import com.example.test.entity.Role;
 import com.example.test.enumeration.ResourceType;
-import com.example.test.enumeration.RoleType;
 import lombok.extern.log4j.Log4j2;
 import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
@@ -16,7 +15,6 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 
-import static org.junit.jupiter.api.Assertions.*;
 @DataJpaTest
 @AutoConfigureTestDatabase(replace = AutoConfigureTestDatabase.Replace.NONE)
 @Transactional
@@ -67,10 +65,10 @@ class ResourceRepositoryTest {
         resourceRepository.save(managerResource);
         resourceRepository.save(userResource   );
 
-        Role roleLeader  = roleRepository.findByRoleType(RoleType.ROLE_LEADER ).get();
-        Role roleSystem  = roleRepository.findByRoleType(RoleType.ROLE_SYSTEM ).get();
-        Role roleManager = roleRepository.findByRoleType(RoleType.ROLE_MANAGER).get();
-        Role roleUser    = roleRepository.findByRoleType(RoleType.ROLE_USER   ).get();
+        Role roleLeader  = roleRepository.findByRoleType("ROLE_LEADER ").get();
+        Role roleSystem  = roleRepository.findByRoleType("ROLE_SYSTEM ").get();
+        Role roleManager = roleRepository.findByRoleType("ROLE_MANAGER").get();
+        Role roleUser    = roleRepository.findByRoleType("ROLE_USER   ").get();
 
         ResourceRole resourceRole1 = ResourceRole.builder().resource(leaderResource ).role(roleLeader ).build();
         ResourceRole resourceRole2 = ResourceRole.builder().resource(systemResource ).role(roleSystem ).build();

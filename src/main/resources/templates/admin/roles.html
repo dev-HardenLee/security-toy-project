@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head th:replace="layout/header::userHead"></head>
+<body>
+<div th:replace="layout/top::header"></div>
+
+<!-- container start -->
+<div class="container text-center">
+    <div class="row col-md-12 mt-3">
+        <h3>권한 계층</h3>
+
+        <div id="chart-container" class="row col-md-12 d-flex justify-content-center">
+
+        </div>
+    </div>
+
+    <div class="row col-md-12 mt-3">
+        <h3>권한 추가</h3>
+
+        <div class="row col-md-12 mt-3 form-group">
+            <form th:action="@{/admin/resource}" class="form" method="post">
+                <div class="form-group">
+                    <input type="number" class="form-control" name="parentRoleId" readonly placeholder="해당 아이디의 자식으로" required="required" autofocus="autofocus" />
+                </div>
+
+                <div class="form-group">
+                    <input type="text" class="form-control" name="roleType" placeholder="ROLE_XXX를 추가합니다." required="required" autofocus="autofocus" />
+                </div>
+
+                <button type="submit" class="btn btn-primary">추가하기</button>
+            </form>
+        </div>
+    </div>
+</div>
+<!-- container end -->
+
+    <script>
+        $(document).ready(function(){
+            $.ajax({
+		        type     : "get",
+		        url      : "/admin/roles-orgchart",
+		        async    : false,
+		        success: function(result){
+					const datasource = result.data;
+
+					$('#chart-container').orgchart({
+                      'data' : datasource,
+                      'depth': 2,
+                      'nodeTitle' : 'title',
+                      'nodeContent': 'name'
+                    });
+		        },
+		        error: function(error){
+				    console.log(error);
+		        	alert("error");
+		        }
+			});// ajax
+
+            $(document).on("click", ".node", function(){
+                const idx = $(".node").index(this);
+                const roleId = $(".title").eq(idx).text();
+
+                $("input[name='parentRoleId']").val(roleId);
+            });// btnManagerDelete onClick
+        });// document
+    </script>
+</body>
+</html>

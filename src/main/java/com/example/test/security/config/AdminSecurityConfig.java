@@ -19,10 +19,11 @@ import org.springframework.security.config.annotation.web.configuration.WebSecur
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.authentication.AuthenticationFailureHandler;
+import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
 
-@EnableWebSecurity(debug = false)
 @Order(1)
 @Configuration
+@EnableWebSecurity(debug = false)
 @RequiredArgsConstructor
 @Log4j2
 public class AdminSecurityConfig extends WebSecurityConfigurerAdapter {
@@ -49,8 +50,7 @@ public class AdminSecurityConfig extends WebSecurityConfigurerAdapter {
                 .mvcMatcher("/admin/**")
                 .authorizeRequests()
                 .antMatchers("/admin/login").permitAll()
-                .antMatchers("/admin/home").hasRole("ADMIN")
-                .anyRequest().authenticated();
+                .anyRequest().hasRole("ADMIN");
 
         http
                 .formLogin()

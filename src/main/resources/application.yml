@@ -25,15 +25,15 @@ spring:
       basename: i18n/exception
       encoding: UTF-8
 
-   devtools:
-         livereload:
-            enabled: true
+   thymeleaf:
+      cache: false
 
+   devtools:
+      livereload:
+         enabled: true
+      remote:
          restart:
             enabled: true
-
-         thymeleaf:
-            cache: false
 
 jwt:
    secret: aGFyZGVuc3ByaW5nc2VjdXJpdHlzdHVkeQ== # 임의의 문자열을 Base64로 인코딩
@@ -43,6 +43,7 @@ jwt:
 #logging.level.org.hibernate:
 #   SQL: debug
 #   type.descriptor.sql: trace
+
 
 
 

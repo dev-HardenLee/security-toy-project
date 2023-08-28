@@ -9,7 +9,6 @@ import org.springframework.stereotype.Service;
 import com.example.test.dto.MemberDTO;
 import com.example.test.dto.RoleDTO;
 import com.example.test.entity.Member;
-import com.example.test.enumeration.RoleType;
 import com.example.test.repository.MemberRepository;
 import com.example.test.security.authentication.ApiCustomUser;
 
@@ -36,9 +35,7 @@ public class CustomUserDetailsService implements UserDetailsService {
 		
 		memberDTO.setRoleDTO(roleDTO);
 		
-		RoleType roleType = roleDTO.getRoleType();
-		
-		return new ApiCustomUser(memberDTO, password, roleType);
+		return new ApiCustomUser(memberDTO, password, roleDTO.getRoleType());
 	}// loadUserByUsername
 	
 }// ApiUserDetailsService
