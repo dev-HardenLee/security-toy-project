@@ -1,0 +1,70 @@
+
+
+success:
+   code: "100"
+   msg: "success"
+
+fail:
+   code: "-999"
+   msg: "etc error" # 기타 예외
+
+security:
+   invalid.user:
+      code: "-100"
+      msg: "Invalid Username or Password" # 유효하지 않는 유저
+   
+   insufficient.authentication:
+      code: "-101"
+      msg: "Insufficient authentication" # 로그인 시 인증 불충분
+   
+   access.denied:
+      code: "-102"
+      msg: "Access is denied. The resource requires higher authorization." # 인가 거부
+   
+   anonymous.user:
+      code: "-103"
+      msg: "You are a Anonymous User. Please check your access token" # 익명 유저저
+
+jwttoken:
+   notfound:
+      code: "-104"
+      msg: "JWT Token not found" # 토큰 무존재
+   
+   expired:
+      code: "-105"
+      msg: "JWT Token was expired" # 토큰 만료
+   
+   extract.exception:
+      code: "-106"
+      msg: "JWT Token extract exception" # 토큰 추출 에러
+      
+   invalid.user:
+      code: "-107"
+      msg: "Token extract success but this user is invalid" # 토큰 추출하였지만 유효하지 않은 유저저
+
+api:
+   join.existalready:
+      code: "-101"
+      msg: "The UserId is exist already"
+   
+      
+      
+   
+   
+   
+   
+   
+   
+   
+   
+   
+   
+   
+   
+   
+   
+   
+   
+   
+   
+   
