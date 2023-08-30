@@ -23,7 +23,10 @@ class RoleRepositoryTest {
 	
 	@Autowired
 	private RoleRepository roleRepository;
-	
+
+	@Autowired
+	private ResourceRoleRepository resourceRoleRepository;
+
 	@Autowired
 	private MemberRepository memberRepository;
 	
@@ -31,26 +34,25 @@ class RoleRepositoryTest {
 	@Disabled
 	@Rollback(value = false)
 	void dummyInsert() {
+		resourceRoleRepository.deleteAll();
 		memberRepository.deleteAll();
 		roleRepository.deleteAll();
 		
 		Role adminRole   = Role.builder().roleType("ROLE_ADMIN").build();
 		
 		roleRepository.save(adminRole);
+
+		Role userRole = Role.builder().roleType("ROLE_USER").parentRole(adminRole).build();
+
+		roleRepository.save(userRole);
+
+		Role engineerRole = Role.builder().roleType("ROLE_ENGINEER").parentRole(adminRole).build();
+
+		roleRepository.save(engineerRole);
 		
-		Role leaderRole  = Role.builder().roleType("ROLE_LEADER").parentRole(adminRole).build();
-		Role systemRole  = Role.builder().roleType("ROLE_SYSTEM").parentRole(adminRole).build();
-		
-		roleRepository.save(leaderRole);
-		roleRepository.save(systemRole);
-		
-		Role managerRole = Role.builder().roleType("ROLE_MANAGER").parentRole(leaderRole).build();
+		Role managerRole = Role.builder().roleType("ROLE_MANAGER").parentRole(adminRole).build();
 		
 		roleRepository.save(managerRole);
-		
-		Role userRole = Role.builder().roleType("ROLE_USER").parentRole(managerRole).build();
-		
-		roleRepository.save(userRole);
 		
 		Role anonymousRole = Role.builder().roleType("ROLE_ANONYMOUS").parentRole(userRole).build();
 		

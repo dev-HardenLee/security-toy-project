@@ -38,16 +38,9 @@ class ResourceRepositoryTest {
         resourceRoleRepository.deleteAll();
         resourceRepository.deleteAll();
 
-        Resource leaderResource = Resource.builder()
-                .requestMatcher("/api/leader")
-                .resourceName("Leader 정보 조회")
-                .httpMethod(HttpMethod.GET.name())
-                .resourceType(ResourceType.API_RESOURCE)
-                .build();
-
-        Resource systemResource = Resource.builder()
-                .requestMatcher("/api/system")
-                .resourceName("System 정보 조회")
+        Resource engineerResource = Resource.builder()
+                .requestMatcher("/api/engineer")
+                .resourceName("engineer 정보 조회")
                 .httpMethod(HttpMethod.GET.name())
                 .resourceType(ResourceType.API_RESOURCE)
                 .build();
@@ -73,29 +66,25 @@ class ResourceRepositoryTest {
                 .resourceType(ResourceType.API_RESOURCE)
                 .build();
 
-        resourceRepository.save(leaderResource  );
-        resourceRepository.save(systemResource  );
+        resourceRepository.save(engineerResource);
         resourceRepository.save(managerResource );
         resourceRepository.save(userResource    );
         resourceRepository.save(userPostResource);
 
-        Role roleLeader    = roleRepository.findByRoleType("ROLE_LEADER"   ).get();
-        Role roleSystem    = roleRepository.findByRoleType("ROLE_SYSTEM"   ).get();
+        Role roleEngineer  = roleRepository.findByRoleType("ROLE_ENGINEER" ).get();
         Role roleManager   = roleRepository.findByRoleType("ROLE_MANAGER"  ).get();
         Role roleUser      = roleRepository.findByRoleType("ROLE_USER"     ).get();
         Role roleAnonymous = roleRepository.findByRoleType("ROLE_ANONYMOUS").get();
 
-        ResourceRole resourceRole1 = ResourceRole.builder().resource(leaderResource  ).role(roleLeader   ).build();
-        ResourceRole resourceRole2 = ResourceRole.builder().resource(systemResource  ).role(roleSystem   ).build();
-        ResourceRole resourceRole3 = ResourceRole.builder().resource(managerResource ).role(roleManager  ).build();
-        ResourceRole resourceRole4 = ResourceRole.builder().resource(userResource    ).role(roleUser     ).build();
-        ResourceRole resourceRole5 = ResourceRole.builder().resource(userPostResource).role(roleAnonymous).build();
+        ResourceRole resourceRole1 = ResourceRole.builder().resource(managerResource ).role(roleManager  ).build();
+        ResourceRole resourceRole2 = ResourceRole.builder().resource(engineerResource).role(roleEngineer ).build();
+        ResourceRole resourceRole3 = ResourceRole.builder().resource(userResource    ).role(roleUser     ).build();
+        ResourceRole resourceRole4 = ResourceRole.builder().resource(userPostResource).role(roleAnonymous).build();
 
         resourceRoleRepository.save(resourceRole1);
         resourceRoleRepository.save(resourceRole2);
         resourceRoleRepository.save(resourceRole3);
         resourceRoleRepository.save(resourceRole4);
-        resourceRoleRepository.save(resourceRole5);
     }// dummyInsert
 
     @Test
