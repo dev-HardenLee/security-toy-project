@@ -23,6 +23,8 @@ public class Resource {
 
     private String requestMatcher;
 
+    private String httpMethod;
+
     @Convert(converter = ResourceTypeConverter.class)
     private ResourceType resourceType;
 

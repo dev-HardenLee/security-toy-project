@@ -26,11 +26,13 @@ public class MemberService {
 	private final MemberRepository memberRepository;
 	
 	private final PasswordEncoder passwordEncoder;
-	
+
+	private final ModelMapper modelMapper;
+
 	@Transactional
-	public Member createMember(MemberDTO.JoinDTO joinDTO) throws UserAlreadyExistException {
+	public Member joinMember(MemberDTO.JoinDTO joinDTO) throws UserAlreadyExistException {
 		if(memberRepository.findByUserId(joinDTO.getUserId()).isPresent()) throw new UserAlreadyExistException();
-		
+
 		Role   role   = roleRepository.findByRoleType(joinDTO.getRoleType()).get();
 		Member member = Member.builder()
 				.name(joinDTO.getName())
@@ -43,7 +45,13 @@ public class MemberService {
 		
 		return member;
 	}// createMember
-	
+
+	public MemberDTO retriveMember(String userId) {
+		Member member = memberRepository.findByUserId(userId).orElseThrow(() -> new IllegalArgumentException("Not exist user ID : " + userId));
+
+		return modelMapper.map(member, MemberDTO.class);
+	}// userId
+
 }// MemberService
 
 

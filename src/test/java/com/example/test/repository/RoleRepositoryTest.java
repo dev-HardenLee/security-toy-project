@@ -29,7 +29,7 @@ class RoleRepositoryTest {
 	
 	@Test
 	@Disabled
-	@Rollback(value = true)
+	@Rollback(value = false)
 	void dummyInsert() {
 		memberRepository.deleteAll();
 		roleRepository.deleteAll();

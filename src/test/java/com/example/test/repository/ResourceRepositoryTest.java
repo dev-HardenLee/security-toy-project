@@ -10,6 +10,7 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabase;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
+import org.springframework.http.HttpMethod;
 import org.springframework.test.annotation.Rollback;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -35,50 +36,66 @@ class ResourceRepositoryTest {
     @Rollback(value = false)
     void dummyInsert() {
         resourceRoleRepository.deleteAll();
+        resourceRepository.deleteAll();
 
         Resource leaderResource = Resource.builder()
-                .requestMatcher("/api/leader/**")
-                .resourceName("Leader 권한 API")
+                .requestMatcher("/api/leader")
+                .resourceName("Leader 정보 조회")
+                .httpMethod(HttpMethod.GET.name())
                 .resourceType(ResourceType.API_RESOURCE)
                 .build();
 
         Resource systemResource = Resource.builder()
-                .requestMatcher("/api/system/**")
-                .resourceName("System 권한 API")
+                .requestMatcher("/api/system")
+                .resourceName("System 정보 조회")
+                .httpMethod(HttpMethod.GET.name())
                 .resourceType(ResourceType.API_RESOURCE)
                 .build();
 
         Resource managerResource = Resource.builder()
-                .requestMatcher("/api/manager/**")
-                .resourceName("Manager 권한 API")
+                .requestMatcher("/api/manager")
+                .resourceName("Manager 정보 조회")
+                .httpMethod(HttpMethod.GET.name())
                 .resourceType(ResourceType.API_RESOURCE)
                 .build();
 
         Resource userResource = Resource.builder()
-                .requestMatcher("/api/user/**")
-                .resourceName("User 권한 API")
+                .requestMatcher("/api/user/*")
+                .resourceName("User 정보 조회")
+                .httpMethod(HttpMethod.GET.name())
                 .resourceType(ResourceType.API_RESOURCE)
                 .build();
 
-        resourceRepository.save(leaderResource );
-        resourceRepository.save(systemResource );
-        resourceRepository.save(managerResource);
-        resourceRepository.save(userResource   );
+        Resource userPostResource = Resource.builder()
+                .requestMatcher("/api/user")
+                .resourceName("User 데이터 생성")
+                .httpMethod(HttpMethod.POST.name())
+                .resourceType(ResourceType.API_RESOURCE)
+                .build();
 
-        Role roleLeader  = roleRepository.findByRoleType("ROLE_LEADER ").get();
-        Role roleSystem  = roleRepository.findByRoleType("ROLE_SYSTEM ").get();
-        Role roleManager = roleRepository.findByRoleType("ROLE_MANAGER").get();
-        Role roleUser    = roleRepository.findByRoleType("ROLE_USER   ").get();
+        resourceRepository.save(leaderResource  );
+        resourceRepository.save(systemResource  );
+        resourceRepository.save(managerResource );
+        resourceRepository.save(userResource    );
+        resourceRepository.save(userPostResource);
 
-        ResourceRole resourceRole1 = ResourceRole.builder().resource(leaderResource ).role(roleLeader ).build();
-        ResourceRole resourceRole2 = ResourceRole.builder().resource(systemResource ).role(roleSystem ).build();
-        ResourceRole resourceRole3 = ResourceRole.builder().resource(managerResource).role(roleManager).build();
-        ResourceRole resourceRole4 = ResourceRole.builder().resource(userResource   ).role(roleUser   ).build();
+        Role roleLeader    = roleRepository.findByRoleType("ROLE_LEADER"   ).get();
+        Role roleSystem    = roleRepository.findByRoleType("ROLE_SYSTEM"   ).get();
+        Role roleManager   = roleRepository.findByRoleType("ROLE_MANAGER"  ).get();
+        Role roleUser      = roleRepository.findByRoleType("ROLE_USER"     ).get();
+        Role roleAnonymous = roleRepository.findByRoleType("ROLE_ANONYMOUS").get();
+
+        ResourceRole resourceRole1 = ResourceRole.builder().resource(leaderResource  ).role(roleLeader   ).build();
+        ResourceRole resourceRole2 = ResourceRole.builder().resource(systemResource  ).role(roleSystem   ).build();
+        ResourceRole resourceRole3 = ResourceRole.builder().resource(managerResource ).role(roleManager  ).build();
+        ResourceRole resourceRole4 = ResourceRole.builder().resource(userResource    ).role(roleUser     ).build();
+        ResourceRole resourceRole5 = ResourceRole.builder().resource(userPostResource).role(roleAnonymous).build();
 
         resourceRoleRepository.save(resourceRole1);
         resourceRoleRepository.save(resourceRole2);
         resourceRoleRepository.save(resourceRole3);
         resourceRoleRepository.save(resourceRole4);
+        resourceRoleRepository.save(resourceRole5);
     }// dummyInsert
 
     @Test

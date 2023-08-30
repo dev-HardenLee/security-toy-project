@@ -3,8 +3,9 @@ package com.example.test.service;
 import java.util.List;
 
 import com.example.test.dto.OrgChartDTO;
-import com.example.test.exception.role.RoleAlreadyExistException;
+import com.example.test.dto.RoleDTO;
 import com.example.test.util.RoleOrgChartUtil;
+import org.modelmapper.ModelMapper;
 import org.springframework.stereotype.Service;
 
 import com.example.test.entity.Role;
@@ -12,7 +13,6 @@ import com.example.test.repository.RoleRepository;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
-import org.springframework.transaction.annotation.Transactional;
 
 @Service
 @RequiredArgsConstructor
@@ -20,8 +20,22 @@ import org.springframework.transaction.annotation.Transactional;
 public class RoleService {
 	
 	private final RoleRepository roleRepository;
-	
-	public String readRoleHierarchy() {
+
+	private final ModelMapper modelMapper;
+
+	public Role addRole(RoleDTO.RequestRoleDTO requestRoleDTO) {
+		Role parentRole = roleRepository.findById(requestRoleDTO.getParentRoleId()).get();
+		Role childRole  = Role.builder()
+				.roleType(requestRoleDTO.getRoleType())
+				.parentRole(parentRole)
+				.build();
+
+		roleRepository.save(childRole);
+
+		return childRole;
+	}// addRole
+
+	public String makeRoleHierarchy() {
 		StringBuilder sb = new StringBuilder();
 		
 		List<Role> roles = roleRepository.findAll();
@@ -38,7 +52,7 @@ public class RoleService {
 		return sb.toString();
 	}// readRoleHierarchy
 
-	public OrgChartDTO getOrgChartDTO() {
+	public OrgChartDTO makeOrgChartDTO() {
 		List<Role> roleList = roleRepository.findAll();
 
 		RoleOrgChartUtil roleOrgChartUtil = new RoleOrgChartUtil(roleList);
@@ -46,21 +60,7 @@ public class RoleService {
 		return roleOrgChartUtil.createOrgChartDTO();
 	}// getOrgChartDTO
 
-	@Transactional
-	public Role addRole(Long parentRoleId, String newRoleType) {
-		if(roleRepository.findByRoleType(newRoleType).isPresent()) throw new RoleAlreadyExistException("Your required role is already exist");
-		
-		Role parentRole = roleRepository.findById(parentRoleId).get();
 
-		Role newRole = Role.builder()
-				.parentRole(parentRole)
-				.roleType(newRoleType)
-				.build();
-
-		roleRepository.save(newRole);
-
-		return newRole;
-	}// addRole
 	
 }// RoleService
 

@@ -2,7 +2,6 @@ package com.example.test.security;
 
 import org.springframework.boot.ApplicationArguments;
 import org.springframework.boot.ApplicationRunner;
-import org.springframework.security.web.access.intercept.FilterSecurityInterceptor;
 import org.springframework.stereotype.Component;
 
 import com.example.test.security.rolehierarcy.CustomRoleHierarcyImpl;
@@ -20,7 +19,7 @@ public class RoleHierarchyInitializer implements ApplicationRunner {
 	
 	@Override
 	public void run(ApplicationArguments args) throws Exception {
-		String roleHierarchy = roleService.readRoleHierarchy();
+		String roleHierarchy = roleService.makeRoleHierarchy();
 		
 		customRoleHierarchyImpl.setHierarchy(roleHierarchy);
 	}// run

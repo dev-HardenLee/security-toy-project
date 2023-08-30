@@ -32,7 +32,7 @@ public class RestApiExceptionController {
 	}// userApiException
 	
 	@ExceptionHandler(value = Exception.class)
-	public ResponseEntity<ResponseDTO> excetipn(Exception exception) {
+	public ResponseEntity<ResponseDTO> exception(Exception exception) {
 		exception.printStackTrace();
 		
 		ResponseDTO responseDTO = responseService.getFailResponseDTO("fail.code", "fail.msg");

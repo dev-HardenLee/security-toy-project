@@ -18,7 +18,7 @@
         <h3>권한 추가</h3>
 
         <div class="row col-md-12 mt-3 form-group">
-            <form th:action="@{/admin/resource}" class="form" method="post">
+            <form th:action="@{/admin/role}" class="form" method="post">
                 <div class="form-group">
                     <input type="number" class="form-control" name="parentRoleId" readonly placeholder="해당 아이디의 자식으로" required="required" autofocus="autofocus" />
                 </div>
@@ -33,9 +33,14 @@
     </div>
 </div>
 <!-- container end -->
-
     <script>
+        const result = "[[${result}]]";
+
         $(document).ready(function(){
+            if(result === "success") {
+                alert("권한이 추가되었습니다.");
+            }// if
+
             $.ajax({
 		        type     : "get",
 		        url      : "/admin/roles-orgchart",

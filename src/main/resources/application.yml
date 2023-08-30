@@ -40,6 +40,11 @@ jwt:
    access.token.expire.time: 3600 # 1시간 (60초 * 60 = 1시간)
    refresh.token.expire.time: 1296000 # 15일 (60초 * 60 = 1시간 -> 1시간 * 24 = 24시간 -> 24시간 * 15 = 15일)
 
+decorator:
+   datasource:
+      p6spy:
+         enable-logging: false
+
 #logging.level.org.hibernate:
 #   SQL: debug
 #   type.descriptor.sql: trace

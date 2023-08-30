@@ -1,6 +1,7 @@
 package com.example.test.security.config;
 
-import java.util.Arrays;
+import java.util.ArrayList;
+import java.util.List;
 
 import org.springframework.boot.autoconfigure.security.servlet.PathRequest;
 import org.springframework.context.annotation.Bean;
@@ -9,8 +10,8 @@ import org.springframework.core.annotation.Order;
 import org.springframework.http.HttpMethod;
 import org.springframework.security.access.AccessDecisionManager;
 import org.springframework.security.access.AccessDecisionVoter;
-import org.springframework.security.access.vote.AffirmativeBased;
 import org.springframework.security.access.vote.RoleHierarchyVoter;
+import org.springframework.security.access.vote.UnanimousBased;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.builders.WebSecurity;
@@ -18,7 +19,6 @@ import org.springframework.security.config.annotation.web.configuration.EnableWe
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
 import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.core.userdetails.UserDetailsService;
-import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.AuthenticationEntryPoint;
 import org.springframework.security.web.access.AccessDeniedHandler;
@@ -216,9 +216,13 @@ public class ApiSecurityConfig extends WebSecurityConfigurerAdapter {
 	
 	@Bean
 	public AccessDecisionManager accessDecisionManager() {
-		AffirmativeBased affirmativeBased = new AffirmativeBased(Arrays.asList(roleHierarcyVoter()));
-		
-		return affirmativeBased;
+		List<AccessDecisionVoter<?>> voters = new ArrayList<>();
+
+		voters.add(roleHierarcyVoter());
+
+		UnanimousBased unanimousBased = new UnanimousBased(voters);
+
+		return unanimousBased;
 	}// accessDecisionManager
 	
 	@Bean
@@ -227,7 +231,8 @@ public class ApiSecurityConfig extends WebSecurityConfigurerAdapter {
 		
 		return roleHierarchyVoter;
 	}// roleHierarcyVoter
-	
+
+
 	
 }// SecurityConfig
 

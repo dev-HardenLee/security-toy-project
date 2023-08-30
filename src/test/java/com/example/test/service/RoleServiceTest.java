@@ -1,8 +1,5 @@
 package com.example.test.service;
 
-import static org.junit.jupiter.api.Assertions.*;
-
-import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -18,7 +15,7 @@ class RoleServiceTest {
 
 	@Test
 	void readRoleHierarchy() {
-		String roleHierarchy = roleService.readRoleHierarchy();
+		String roleHierarchy = roleService.makeRoleHierarchy();
 		
 		log.info("\n" + roleHierarchy);
 	}// readRoleHierarchy
