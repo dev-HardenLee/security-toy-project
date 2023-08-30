@@ -35,9 +35,11 @@ public class ResourceService {
 
 			RequestMatcher requestMatcher = new AntPathRequestMatcher(resource.getRequestMatcher(), resource.getHttpMethod());
 
-			List<ConfigAttribute> configAttributes = Arrays.asList(new SecurityConfig(role.getRoleType()));
-
-			resourceMap.put(requestMatcher, configAttributes);
+			if(resourceMap.get(requestMatcher) == null) {
+				resourceMap.put(requestMatcher, Arrays.asList(new SecurityConfig(role.getRoleType())));
+			}else {
+				resourceMap.get(requestMatcher).add(new SecurityConfig(role.getRoleType()));
+			}// if-else
 		}// for
 		
 		return resourceMap;
