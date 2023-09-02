@@ -28,6 +28,7 @@ public class ApiAccessDeniedHandler implements AccessDeniedHandler {
 	@Override
 	public void handle(HttpServletRequest request, HttpServletResponse response,
 			AccessDeniedException accessDeniedException) throws IOException, ServletException {
+		// 해당 자원의 권한이 있는지 확인. 사용자의 권한 확인.
 		ResponseDTO responseDTO = responseSerivce.getFailResponseDTO("security.access.denied.code", "security.access.denied.msg");
 		
 		response.setStatus(HttpStatus.FORBIDDEN.value());

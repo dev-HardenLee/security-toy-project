@@ -41,9 +41,7 @@ public class ApiJwtTokenExceptionHandler {
 		}else {
 			authException.printStackTrace();
 			
-			responseDTO = responseService.getFailResponseDTO("fail.code", "fail.msg");
-			
-			responseDTO.setDetailMsg(authException.getMessage());
+			responseDTO = responseService.getFailResponseDTO("fail.code", "fail.msg", authException);
 		}// if-else
 		
 		objectMapper.writeValue(response.getWriter(), responseDTO);

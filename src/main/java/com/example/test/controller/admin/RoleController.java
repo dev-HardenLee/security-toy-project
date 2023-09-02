@@ -12,9 +12,7 @@ import lombok.extern.log4j.Log4j2;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 @AdminController
@@ -30,7 +28,9 @@ public class RoleController {
     public String addRole(RoleDTO.RequestRoleDTO requestRoleDTO, RedirectAttributes redirectAttributes) {
         Role addedRole = roleService.addRole(requestRoleDTO);
 
-        redirectAttributes.addFlashAttribute("result", "success");
+        roleService.reloadRoleHierarchy();
+
+        redirectAttributes.addFlashAttribute("addResult", "success");
 
         return "redirect:/admin/roles";
     }// addRole
@@ -48,7 +48,20 @@ public class RoleController {
         SingleDataResponseDTO<OrgChartDTO> responseDTO = responseService.getSingleSuccessResponseDTO(roleOrgChart);
 
         return new ResponseEntity<>(responseDTO, HttpStatus.OK);
-    }// getROlesHierarchy
+    }// getRolesOrgChart
+
+    @PutMapping("/role")
+    public String updateRole(RoleDTO.RequestUpdateRoleDTO requestDTO, RedirectAttributes redirectAttributes) {
+        if(requestDTO.getRoleId() == requestDTO.getParentRoleId()) throw new IllegalArgumentException("You can't choice same ID");
+
+        Role role = roleService.updateRole(requestDTO);
+
+        roleService.reloadRoleHierarchy();
+
+        redirectAttributes.addFlashAttribute("updateResult", "success");
+
+        return "redirect:/admin/roles";
+    }// parentChange
 
 
 }// RoleController

@@ -51,7 +51,17 @@ public class ResponseService {
 		
 		return multiDataResponseDTO;
 	}// getMultiSuccessResponseDTO
-	
+
+	public ResponseDTO getFailResponseDTO(String code, String msg, Exception e) {
+		ResponseDTO responseDTO = new ResponseDTO();
+
+		responseDTO.setCode(getMessage(code));
+		responseDTO.setMsg(getMessage(msg));
+		responseDTO.setDetailMsg(e.getMessage());
+
+		return responseDTO;
+	}// getFailResponseDTO
+
 	public ResponseDTO getFailResponseDTO(String code, String msg) {
 		ResponseDTO responseDTO = new ResponseDTO();
 		

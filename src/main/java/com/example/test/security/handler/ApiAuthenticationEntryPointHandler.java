@@ -35,9 +35,7 @@ public class ApiAuthenticationEntryPointHandler implements AuthenticationEntryPo
 		}else {
 			authException.printStackTrace();
 			
-			responseDTO = responseService.getFailResponseDTO("fail.code", "fail.msg");
-			
-			responseDTO.setDetailMsg(authException.getMessage());
+			responseDTO = responseService.getFailResponseDTO("fail.code", "fail.msg", authException);
 		}// if-else
 				
 		response.setStatus(HttpStatus.UNAUTHORIZED.value());

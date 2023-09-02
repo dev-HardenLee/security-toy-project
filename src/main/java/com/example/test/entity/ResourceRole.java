@@ -1,18 +1,17 @@
 package com.example.test.entity;
 
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.NoArgsConstructor;
-import lombok.ToString;
+
+import lombok.*;
 
 import javax.persistence.*;
 
 @Entity
-@ToString(exclude = {"resource", "role"})
-@NoArgsConstructor
+@NoArgsConstructor(access = AccessLevel.PROTECTED)
 @AllArgsConstructor
+@ToString(exclude = {"resource", "role"})
+@Getter
 @Builder
-public class ResourceRole {
+public class ResourceRole extends BaseEntity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
@@ -26,6 +25,19 @@ public class ResourceRole {
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "ROLE_ID")
     private Role role;
+
+    public void createRelationShip(Resource resource) {
+        if(this.resource == null) {
+            this.resource = resource;
+            this.resource.getResourceRoleList().add(this);
+        }// if
+    }// createRelationShip
+
+    public void breakRelationShip() {
+        if(this.resource != null && this.resource.getResourceRoleList().contains(resource)) {
+            this.resource.getResourceRoleList().remove(resource);
+        }// if
+    }// breakRelationShip
 
 }// ResourceRole
 

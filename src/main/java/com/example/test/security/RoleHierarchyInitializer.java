@@ -15,13 +15,9 @@ public class RoleHierarchyInitializer implements ApplicationRunner {
 	
 	private final RoleService roleService;
 	
-	private final CustomRoleHierarcyImpl customRoleHierarchyImpl;
-	
 	@Override
 	public void run(ApplicationArguments args) throws Exception {
-		String roleHierarchy = roleService.makeRoleHierarchy();
-		
-		customRoleHierarchyImpl.setHierarchy(roleHierarchy);
+		roleService.reloadRoleHierarchy();
 	}// run
 	
 	

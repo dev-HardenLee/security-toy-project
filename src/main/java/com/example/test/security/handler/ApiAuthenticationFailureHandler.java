@@ -39,7 +39,7 @@ public class ApiAuthenticationFailureHandler implements AuthenticationFailureHan
 			responseDTO = responseService.getFailResponseDTO("security.insufficient.authenticaion.code", "security.insufficient.authenticaion.msg");
 		}else {
 			exception.printStackTrace();
-			
+
 			responseDTO = responseService.getFailResponseDTO("fail.code", "fail.msg");
 		}// if-else
 		

@@ -3,11 +3,10 @@ package com.example.test.controller;
 import com.example.test.annotation.ApiController;
 import com.example.test.dto.response.ResponseDTO;
 import com.example.test.entity.Member;
-import com.example.test.exception.join.UserAlreadyExistException;
+import com.example.test.exception.user.UserAlreadyExistException;
 import com.example.test.service.MemberService;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
 
 import com.example.test.dto.MemberDTO;

@@ -6,6 +6,7 @@
             <a class="text-light" href="#"><h4>Spring Security World</h4></a>
             <ul class="nav justify-content-end">
                 <li class="nav-item" sec:authorize="hasRole('ADMIN')"><a class="nav-link text-light" th:href="@{/admin/roles}">권한 관리</a></li>
+                <li class="nav-item" sec:authorize="hasRole('ADMIN')"><a class="nav-link text-light" th:href="@{/admin/resources}">자원 관리</a></li>
                 <li class="nav-item" sec:authorize="hasRole('ADMIN')"><a class="nav-link text-light" th:href="@{/admin/my-page}">내정보</a></li>
             </ul>
         </div>

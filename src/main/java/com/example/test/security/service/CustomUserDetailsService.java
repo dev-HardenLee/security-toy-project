@@ -27,9 +27,9 @@ public class CustomUserDetailsService implements UserDetailsService {
 	@Override
 	public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
 		Member member = memberRepository.findByUserId(username).orElseThrow(() -> new UsernameNotFoundException("Username Not Found"));
-		
+
 		String password = member.getPassword();
-		
+
 		MemberDTO memberDTO = modelMapper.map(member          , MemberDTO.class);
 		RoleDTO   roleDTO   = modelMapper.map(member.getRole(), RoleDTO.class  );
 		

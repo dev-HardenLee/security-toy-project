@@ -15,59 +15,116 @@
     </div>
 
     <div class="row col-md-12 mt-3">
-        <h3>권한 추가</h3>
+        <select id="methodSelect" class="form-select">
+            <option value="0" selected>선택</option>
+            <option value="1">생성</option>
+            <option value="2">변경</option>
+        </select>
+    </div>
 
-        <div class="row col-md-12 mt-3 form-group">
-            <form th:action="@{/admin/role}" class="form" method="post">
-                <div class="form-group">
-                    <input type="number" class="form-control" name="parentRoleId" readonly placeholder="해당 아이디의 자식으로" required="required" autofocus="autofocus" />
-                </div>
+    <div class="row col-md-12 mt-3">
+        <div class="row col-md-4">
+            <h3>권한 추가</h3>
 
-                <div class="form-group">
-                    <input type="text" class="form-control" name="roleType" placeholder="ROLE_XXX를 추가합니다." required="required" autofocus="autofocus" />
-                </div>
+            <div class="row col-md-12 mt-3 form-group">
+                <form id="postFrm" th:action="@{/admin/role}" class="form" th:method="post">
+                    <div class="form-group">
+                        <input type="number" class="form-control" name="parentRoleId" readonly placeholder="해당 권한의 자식으로" required="required" autofocus="autofocus" />
+                    </div>
 
-                <button type="submit" class="btn btn-primary">추가하기</button>
-            </form>
+                    <div class="form-group">
+                        <input type="text" class="form-control" name="roleType" placeholder="ROLE_XXX를 추가합니다." required="required" autofocus="autofocus" />
+                    </div>
+
+                    <button type="submit" class="btn btn-primary">추가하기</button>
+                </form>
+            </div>
+        </div>
+
+        <div class="row col-md-4">
+            <h3>권한 변경</h3>
+
+            <div class="row col-md-12 mt-3 form-group">
+                <form id="putFrm" th:action="@{/admin/role}" class="form" th:method="put">
+                    <div class="form-group">
+                        <input type="number" class="form-control" name="roleId" readonly placeholder="해당 권한을" required="required" autofocus="autofocus" />
+                    </div>
+
+                    <div class="form-group">
+                        <input type="number" class="form-control" name="parentRoleId" readonly placeholder="해당 권한의 자식으로" required="required" autofocus="autofocus" />
+                    </div>
+
+                    <div class="form-group">
+                        <input type="text" class="form-control" name="roleType" placeholder="ROLE_XXX 이름으로 변경" required="required" autofocus="autofocus" />
+                    </div>
+
+                    <button type="submit" class="btn btn-primary">변경하기</button>
+                </form>
+            </div>
         </div>
     </div>
 </div>
 <!-- container end -->
     <script>
-        const result = "[[${result}]]";
+        const addResult    = "[[${addResult}]]";
+        const updateResult = "[[${updateResult}]]";
+
+        let num = 0;
 
         $(document).ready(function(){
-            if(result === "success") {
+            if(addResult === "success") {
                 alert("권한이 추가되었습니다.");
             }// if
 
-            $.ajax({
-		        type     : "get",
-		        url      : "/admin/roles-orgchart",
-		        async    : false,
-		        success: function(result){
-					const datasource = result.data;
-
-					$('#chart-container').orgchart({
-                      'data' : datasource,
-                      'depth': 2,
-                      'nodeTitle' : 'title',
-                      'nodeContent': 'name'
-                    });
-		        },
-		        error: function(error){
-				    console.log(error);
-		        	alert("error");
-		        }
-			});// ajax
+            if(updateResult === "success") {
+                alert("권한이 수정되었습니다.");
+            }// if
 
             $(document).on("click", ".node", function(){
                 const idx = $(".node").index(this);
                 const roleId = $(".title").eq(idx).text();
 
-                $("input[name='parentRoleId']").val(roleId);
+                const selectValue = $("#methodSelect").val();
+
+                if(selectValue === "1") {
+                    $("#postFrm input[name='parentRoleId']").val(roleId);
+                }else if(selectValue === "2") {
+                    if(num == 0) {
+                        $("#putFrm input[name='roleId']").val(roleId);
+
+                        num ++;
+                    }else {
+                        $("#putFrm input[name='parentRoleId']").val(roleId);
+
+                        num = 0;
+                    }// if-else
+                }
             });// btnManagerDelete onClick
+
+            roleHierarchyOrgChart();
         });// document
+
+        function roleHierarchyOrgChart() {
+            $.ajax({
+                type     : "get",
+                url      : "/admin/roles-orgchart",
+                async    : false,
+                success: function(result){
+                    const datasource = result.data;
+
+                    $('#chart-container').orgchart({
+                      'data' : datasource,
+                      'depth': 2,
+                      'nodeTitle' : 'title',
+                      'nodeContent': 'name'
+                    });
+                },
+                error: function(error){
+                    console.log(error);
+                    alert("error");
+                }
+            });// ajax
+        }// roleHierarchyOrgChart
     </script>
 </body>
 </html>

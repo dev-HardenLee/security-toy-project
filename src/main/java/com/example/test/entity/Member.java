@@ -45,7 +45,11 @@ public class Member {
 	public void changeRole(Role role) {
 		this.role = role;
 	}// changeRole
-	
+
+	public void eraseRole() {
+		this.role = null;
+	}
+
 }// Member
 
 

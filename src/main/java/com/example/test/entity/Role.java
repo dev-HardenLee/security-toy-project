@@ -30,7 +30,15 @@ public class Role {
 	@ManyToOne(fetch = FetchType.LAZY)
 	@JoinColumn(name = "PARENT_ROLE_ID")
 	private Role parentRole;
-	
+
+	public void changeParent(Role parentRole) {
+		this.parentRole = parentRole;
+	}// changeParent
+
+	public void changeRoleType(String roleType) {
+		this.roleType = roleType;
+	}// changeRoleType
+
 }// Role
 
 

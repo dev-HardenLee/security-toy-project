@@ -11,6 +11,7 @@ public class RoleDTO {
 	private Long id;
 	
 	private String roleType;
+
 	@Data
 	@NoArgsConstructor
 	@AllArgsConstructor
@@ -21,4 +22,39 @@ public class RoleDTO {
 		private String roleType;
 	}// RequestRoleDTO
 
+	@Data
+	@NoArgsConstructor
+	@AllArgsConstructor
+	@Builder
+	public static class RequestUpdateRoleDTO {
+		private Long roleId;
+
+		private Long parentRoleId;
+
+		private String roleType;
+	}// RequestUpdateParentRoleDTO
+
 }// RoleDTO
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

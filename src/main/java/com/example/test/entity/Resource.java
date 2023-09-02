@@ -5,11 +5,14 @@ import com.example.test.enumeration.ResourceType;
 import lombok.*;
 
 import javax.persistence.*;
+import java.util.ArrayList;
+import java.util.List;
 
 @Entity
 @Getter
 @NoArgsConstructor
 @AllArgsConstructor
+@EqualsAndHashCode(of = "id")
 @Builder
 @ToString
 public class Resource {
@@ -27,5 +30,8 @@ public class Resource {
 
     @Convert(converter = ResourceTypeConverter.class)
     private ResourceType resourceType;
+
+    @OneToMany(fetch = FetchType.LAZY, mappedBy = "resource")
+    private List<ResourceRole> resourceRoleList = new ArrayList<>();
 
 }// Resource

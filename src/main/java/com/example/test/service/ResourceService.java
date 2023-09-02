@@ -1,10 +1,14 @@
 package com.example.test.service;
 
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.LinkedHashMap;
 import java.util.List;
 
+import com.example.test.dto.ResourceDTO;
+import com.example.test.dto.RoleDTO;
 import com.example.test.entity.Resource;
+import com.example.test.entity.ResourceRole;
 import com.example.test.entity.Role;
 import com.example.test.enumeration.ResourceType;
 import com.example.test.repository.ResourceRepository;
@@ -24,22 +28,29 @@ public class ResourceService {
 
 	private final ResourceRepository resourceRepository;
 
+	public List<ResourceDTO> getAllResourceList() {
+		LinkedHashMap<Resource, List<Role>> resourceMap = new LinkedHashMap<>();
+
+		return null;
+	}// getAllResourceList
+
 	public LinkedHashMap<RequestMatcher, List<ConfigAttribute>> getApiResourceMap() {
 		LinkedHashMap<RequestMatcher, List<ConfigAttribute>> resourceMap = new LinkedHashMap<>();
 
-		List<Object[]> resourceList = resourceRepository.findByResourceTypeWithRole(ResourceType.API_RESOURCE);
+		List<Resource> resourceList = resourceRepository.findByResourceTypeWithRole(ResourceType.API_RESOURCE);
 
-		for (Object[] object : resourceList) {
-			Resource resource = (Resource) object[0];
-			Role     role     = (Role    ) object[2];
-
+		for (Resource resource : resourceList) {
 			RequestMatcher requestMatcher = new AntPathRequestMatcher(resource.getRequestMatcher(), resource.getHttpMethod());
 
-			if(resourceMap.get(requestMatcher) == null) {
-				resourceMap.put(requestMatcher, Arrays.asList(new SecurityConfig(role.getRoleType())));
-			}else {
-				resourceMap.get(requestMatcher).add(new SecurityConfig(role.getRoleType()));
-			}// if-else
+			List<ConfigAttribute> roleList = new ArrayList<>();
+
+			for (ResourceRole resourceRole : resource.getResourceRoleList()) {
+				String roleName = resourceRole.getRole().getRoleType();
+
+				roleList.add(new SecurityConfig(roleName));
+			}// for
+
+			resourceMap.put(requestMatcher, roleList);
 		}// for
 		
 		return resourceMap;

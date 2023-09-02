@@ -60,7 +60,7 @@ class UserControllerTest {
                 .apply(springSecurity())
                 .build();
 
-        memberRepository.deleteAll();
+        memberRepository.bulkDeleteAll();
     }// setUp
     @Test
     @DisplayName("joinMember : 회원가입에 성공한다.")
@@ -103,10 +103,10 @@ class UserControllerTest {
 
         // then
         result
+                .andDo(print())
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.code").value("-101"))
-                .andExpect(jsonPath("$.msg").value("The UserId is exist already"))
-                .andDo(print());
+                .andExpect(jsonPath("$.msg").value("The UserId is exist already"));
     }// joinMemberDuplicationTest
     @DisplayName("retriveUser : 유저 검색에 성공한다.")
     @WithMockUser(username = "harden", roles = {"USER"})
@@ -119,7 +119,7 @@ class UserControllerTest {
 
         // when
         ResultActions result = mockMvc.perform(
-                get("/api/user/" + member.getUserId())
+                get("/api/user/{userId}", member.getUserId())
                         .contentType(MediaType.APPLICATION_JSON_VALUE)
         );
 

@@ -25,6 +25,10 @@ security:
       code: "-103"
       msg: "You are a Anonymous User. Please check your access token" # 익명 유저저
 
+   doesnthaveanyrole:
+      code: "-102"
+      msg: "This user doesn't have any role"
+
 jwttoken:
    notfound:
       code: "-104"
@@ -43,12 +47,19 @@ jwttoken:
       msg: "Token extract success but this user is invalid" # 토큰 추출하였지만 유효하지 않은 유저저
 
 api:
-   join.existalready:
-      code: "-101"
-      msg: "The UserId is exist already"
-   
-      
-      
+   user:
+      existalready:
+         code: "-101"
+         msg: "The UserId is exist already"
+
+   role:
+      existalready:
+         code: "-101"
+         msg: "This Role is exist already"
+
+      childroleexist:
+         code: "-102"
+         msg: "This Role has child roles"
    
    
    

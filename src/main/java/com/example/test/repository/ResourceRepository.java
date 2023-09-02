@@ -8,17 +8,16 @@ import org.springframework.data.repository.query.Param;
 
 import java.util.List;
 
-public interface ResourceRepository extends JpaRepository<Resource, Long> {
+public interface ResourceRepository extends JpaRepository<Resource, Long>, ResourceRepositoryCustom{
 
     @Query(
-            "SELECT resource, resourceRole, role " +
+            "SELECT DISTINCT resource " +
             "FROM Resource resource " +
-            "LEFT JOIN ResourceRole resourceRole ON resourceRole.resource = resource " +
-            "LEFT JOIN Role         role         ON resourceRole.role     = role " +
+            "LEFT JOIN FETCH resource.resourceRoleList resourceRole " +
+            "LEFT JOIN FETCH resourceRole.role role " +
             "WHERE 1=1 " +
             "AND resource.resourceType = :resourceType"
     )
-    public List<Object[]> findByResourceTypeWithRole(@Param(value = "resourceType") ResourceType resourceType);
-
+    public List<Resource> findByResourceTypeWithRole(@Param(value = "resourceType") ResourceType resourceType);
 
 }// ResourceRepository

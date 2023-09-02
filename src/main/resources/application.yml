@@ -5,14 +5,17 @@ spring:
       port: 6379
    
    datasource:
-      url: jdbc:h2:tcp://localhost/~/RestAPIProject
+#      url: jdbc:h2:tcp://localhost/~/RestAPIProject
+      url: jdbc:h2:mem:testdb
       username: sa
-      password: 1234
+      #password: 1234
+      password:
       driver-class-name: org.h2.Driver
+      initialization-mode: always
    
    jpa:
       hibernate:
-         ddl-auto: update
+         ddl-auto: create
       
       properties:
          hibernate:
@@ -20,7 +23,8 @@ spring:
             format_sql: true
       
       open-in-view: false
-      
+      defer-datasource-initialization: true
+
    messages:
       basename: i18n/exception
       encoding: UTF-8
@@ -34,6 +38,9 @@ spring:
       remote:
          restart:
             enabled: true
+
+   mvc:
+      hiddenmethod.filter.enabled: true
 
 jwt:
    secret: aGFyZGVuc3ByaW5nc2VjdXJpdHlzdHVkeQ== # 임의의 문자열을 Base64로 인코딩

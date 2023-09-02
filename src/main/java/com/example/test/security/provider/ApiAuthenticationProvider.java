@@ -25,8 +25,8 @@ public class ApiAuthenticationProvider implements AuthenticationProvider {
 		String password = (String) authentication.getCredentials();
 		
 		// id check
-		ApiCustomUser apiCustomUser = (ApiCustomUser) userDetailsService.loadUserByUsername(username); 
-		
+		ApiCustomUser apiCustomUser = (ApiCustomUser) userDetailsService.loadUserByUsername(username);
+
 		// password check
 		if(!passwordEncoder.matches(password, apiCustomUser.getPassword())) throw new BadCredentialsException("Password is encorrect");
 		
